@@ -1,4 +1,7 @@
-# LuaUtil
+# LuaUtil (com.nexlua.LuaUtil)
+
+LuaUtil 是一个用于处理文件、资产、流和安全相关操作的工具类。它提供了多种方法来读取文件、复制文件、处理资产以及计算消息摘要等。
+你可以通过 luajava.bindClass("com.nexlua.LuaUtil") 获取 LuaUtil 类的实例。
 
 ## Base
 

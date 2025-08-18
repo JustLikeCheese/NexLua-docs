@@ -1,5 +1,9 @@
 # LuaJava API
 
+NexLua 提供了一套私有的 LuaJava API，用于与 Java 进行交互。以下是一些常用的 API 接口。
+其中 jclass 指的是 Java 的 Class 对象，jmethod 指的是 Java 的 Method 对象，jobject 指的是 Java 的对象实例，jarray 指的是 Java 的数组对象。
+每个创建的 LuaState 在加载时就会自动加载 LuaJava 库。
+
 jclass luajava.bindClass(string className)  
 类似 `Class.forName(className)`, 查找类名对应的 `Class` 对象。  
 例如 `luajava.bindClass("java.lang.String")` 返回 `String.class`。
