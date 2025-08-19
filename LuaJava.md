@@ -17,7 +17,7 @@ object luajava.luaify(jobject obj)
 将 Java 对象完全转换为 Lua 对象。  
 例如 `luajava.luaify(luajava.bindClass("java.lang.String").new("Hello"))` 返回一个 Lua 字符串对象。
 
-jobject luajava.newInstance(jclass clazz, object... args)  
+jobject luajava.newInstance(jclass clazz, object... args)  (别名 new)
 创建一个 Java 对象实例，类似 `new clazz(args)`。  
 例如 `luajava.newInstance(luajava.bindClass("android.widget.TextView"), activity)` 返回一个 `TextView` 对象。
 
@@ -28,6 +28,10 @@ jarray luajava.createArray(jclass clazz, int dim1, int dim2, ...)
 jobject luajava.createProxy(jclass clazz, object... args)  
 创建一个 Java 代理对象，类似 `Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, handler)`。  
 例如 `luajava.createProxy(luajava.bindClass("java.lang.Runnable"), function() print("Hello from Lua") end)` 返回一个实现了 `Runnable` 接口的代理对象。
+
+table luajava.unwrap(jobject obj)
+返回代理对象的表
+例如 `luajava.unwrap(runnableProxy)` 返回一个包含 `run` 方法的表
 
 jobject luajava.caught()  
 捕捉 Java 异常并返回异常对象。如果没有异常发生，返回 `nil`。
