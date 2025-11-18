@@ -4,22 +4,22 @@ layout: home
 
 hero:
   name: "NexLua"
-  text: "NexLua official documentation"
-  tagline: My great project tagline
+  text: "次世代 LuaJava 框架"
+  tagline: 让 Lua 再次伟大
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: 快速开始
+      link: /quick-start
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: 实例
+      link: /example/luajava-examples
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 框架轻量
+    details: 框架使用 Java / C 实现，无其他依赖项
+  - title: LuaJIT 加持
+    details: 使用 LuaJIT 作为 Lua 核心，针对不同 CPU 架构有相应的优化
+  - title: 框架稳定
+    details: NexLua 提供了完整的错误处理机制
 ---
 
