@@ -1,10 +1,8 @@
 # Nex LuaJava API
 
-NexLua 提供了一套 Nex LuaJava 接口(简称 nxluajava)，用于与 Java 进行交互。以下是一些常用的 API 
+NexLua 提供了一套 Nex LuaJava 接口(简称 nxluajava)，用于与 Java 进行交互。以下是一些常用的 API。
 
-其中 jclass 指的是 Java 的 Class 对象，jmethod 指的是 Java 的 Method 对象，jobject 指的是 Java 的对象实例，jarray 指的是 Java 的数组对象。
-
-## jclass luajava.bindClass(string className)
+## luajava.bindClass(className)
 
 类似 `Class.forName(className)`, 查找类名对应的 `Class` 对象。  
 例如 `luajava.bindClass("java.lang.String")` 返回 `String.class`。
@@ -14,7 +12,14 @@ local String = luajava.bindClass("java.lang.String")
 print(String) -- class java.lang.String
 ```
 
-## jmethod luajava.bindMethod(jclass obj, string methodName, \[, jclass methodType\])
+可以使用 `void`, `boolean`, `char`, `byte`, `short`, `int`, `long`, `float`, `double` 来获取原始类型
+
+```lua
+local int = luajava.bindClass("int")
+print(int) -- class int
+```
+
+## luajava.bindMethod(class, methodName \[, methodType\])
 
 类似 `obj.getClass().getMethod(methodName, methodType)`, 查找对象的指定方法。当 `methodName` 为 `new` 时，返回构造方法。
 
@@ -23,58 +28,183 @@ local ArrayList = luajava.bindClass("java.util.ArrayList")
 local ArrayList_new = luajava.bindMethod(ArrayList, "new")
 
 local Object = luajava.bindClass("java.lang.Object")
-local Integer = luajava.bindClass("java.lang.Integer")
-local ArrayList_add = luajava.bindMethod(ArrayList, "add", Object)
-local ArrayList_add_at = luajava.bindMethod(ArrayList, "add", Integer, Object)
+local int = luajava.bindClass("int")
+local ArrayList_add1 = luajava.bindMethod(ArrayList, "add", Object)
+local ArrayList_add2 = luajava.bindMethod(ArrayList, "add", Integer, Object)
 
 local myArray = ArrayList_new()
-addElement(myArray, "Hello")
-addAtIndex(myArray, 0, "World")
-print(myArray.toString()) -- [World, Hello]
+ArrayList_add1(myArray, "Hello")
+ArrayList_add2(myArray, 0, "World")
+print(myArray.toString())
 ```
 
-## boolean instanceof(jobject obj, jclass class)
-判断 obj 是否为 class 类
+## luajava.instanceof(obj, class)
 
-## jobject luajava.toObject(object obj)
-将 Lua 对象转换为 Java 对象。  
+判断 obj 是否为 class 类型，返回 true 或 false。  
 
-## jobject luajava.toMap(table obj \[, jclass keyClass, jclass valueClass\])
-将 Lua Table 对象转换为 Java Map。  
+```lua
+local Button = luajava.bindClass("android.widget.Button")
+local btn = Button(activity)
+if luajava.instanceof(btn, Button) then
+  print("btn is a Button")
+end
+```
 
-## jobject luajava.toArray(table obj \[, jclass type\])
-将 Lua Table 对象转换为 Java Array。  
+## luajava.toJavaObject(value \[, class\])
 
-## table luajava.asTable(jobject obj)
-将 Java 对象转换为 Lua Table。  
+将 Lua 值转换为 Java 对象。可选参数 `class` 指定目标对象类型。默认为 `Object`。  
 
-## object luajava.asObject(jobject obj)  
-将 Java 对象完全转换为 Lua 对象。  
-例如 `luajava.toObject(luajava.bindClass("java.lang.String").new("Hello"))` 返回一个 Lua 字符串对象。
+```lua
+-- convert string to java.lang.String
+local text = "updog"
+local javaString = luajava.toJavaObject(t)
+print(javaString.getClass().getName()) -- class java.lang.String
+local int = luajava.bindClass("int")
+local float = luajava.bindClass("float")
+-- convert number to int or float
+local num = 123
+local javaInt = luajava.toJavaObject(num, int)
+local javaFloat = luajava.toJavaObject(num, float)
+print(javaInt.getClass().getName()) -- class int
+print(javaFloat.getClass().getName()) -- class float
+```
 
-jobject luajava.newInstance(jclass clazz, object... args)  (别名 new)
+## luajava.toJavaArray(value \[, class\])
+
+将 Lua 值转换为 Java Array。可选参数 `class` 指定目标对象类型。默认为 `Object`。  
+
+```lua
+local arr = {1, 2, 3}
+local javaArray1 = luajava.toJavaArray(arr)
+local javaArray2 = luajava.toJavaArray(arr, luajava.bindClass("float"))
+```
+
+## luajava.toJavaMap(value \[, keyClass, valueClass\])
+
+将 Lua 值转换为 Java Map。 可选参数 `keyClass` 和 `valueClass` 指定目标对象类型。默认为 `Object`。  
+
+```lua
+local HashMap = luajava.bindClass("java.util.HashMap")
+local String = luajava.bindClass("java.lang.String")
+local int = luajava.bindClass("int")
+
+local luaMap = {
+  "user1" = 20,
+  "user2" = 20,
+  "user3" = 50,
+  "user4" = 100
+}
+
+local javaMap = luajava.toJavaMap(luaMap, String, int)
+```
+
+## luajava.toString(obj)
+
+将 Java 对象转换为 Lua 字符串。调用的 Object 的 toString() 方法。  
+
+```lua
+local Button = luajava.bindClass("android.widget.Button")
+print(luajava.toString(Button)) -- class android.widget.Button
+```
+
+## luajava.asTable(obj)
+
+```lua
+-- HashMap
+local HashMap = luajava.bindClass("java.util.HashMap")
+local String = luajava.bindClass("java.lang.String")
+local int = luajava.bindClass("int")
+
+local luaMap = {
+  "user1" = 20,
+  "user2" = 20,
+  "user3" = 50,
+  "user4" = 100
+}
+
+local javaMap = luajava.toJavaMap(luaMap, String, int)
+-- luajava.asTable
+local map = luajava.asTable(javaMap)
+print(map["user1"]) -- 20
+```
+
+将 Java 对象转换为 Lua 表。  
+
+## luajava.newInstance(clazz, object... args)  
+
 创建一个 Java 对象实例，类似 `new clazz(args)`。  
-例如 `luajava.newInstance(luajava.bindClass("android.widget.TextView"), activity)` 返回一个 `TextView` 对象。
 
-jarray luajava.createArray(jclass clazz, int dim1, int dim2, ...)  
+```lua
+local Button = luajava.bindClass("android.widget.Button")
+local btn = luajava.newInstance(Button, activity)
+```
+
+## luajava.createArray(jclass clazz, int dim1 \[, int dim2, ...\])  
+
 创建一个 Java 数组对象，类似 `new clazz[dim1][dim2]...`。  
-例如 `luajava.createArray(luajava.bindClass("java.lang.String"), 10)` 返回一个长度为 10 的字符串数组。
 
-jobject luajava.createProxy(jclass clazz, object... args)  
+> 注意: Java 数组在 NexLuaJava 中使用 0 作为开始索引, 并且支持 ipairs, pairs 遍历
+
+```lua
+local String = luajava.bindClass("java.lang.String")
+local myArray = luajava.createArray(String, 10)
+local length = #myArray
+for i = 0, length-1 do
+  myArray[i] = "Hello"
+end
+
+for key, value in pairs(myArray) do
+  print(key, value)
+end
+
+for key, value in ipairs(myArray) do
+  print(key, value)
+end
+```
+
+## luajava.createProxy(clazz, handler)  
+
 创建一个 Java 代理对象，类似 `Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, handler)`。  
-例如 `luajava.createProxy(luajava.bindClass("java.lang.Runnable"), function() print("Hello from Lua") end)` 返回一个实现了 `Runnable` 接口的代理对象。
 
-table luajava.unwrap(jobject obj)
-返回代理对象的表
-例如 `luajava.unwrap(runnableProxy)` 返回一个包含 `run` 方法的表
+```lua
+local Runnable = luajava.bindClass("java.lang.Runnable")
+-- Use table as handler
+local luaRunnable1 = luajava.newProxy(Runnable, {
+  run = function()
+    print("Run!")
+  end
+})
+luaRunnable1.run()
+-- You can also use function as handler
+local luaRunnable2 = luajava.newProxy(Runnable, function()
+  print("Here we go!")
+end)
+luaRunnable2.run()
+```
 
-jobject luajava.caught()  
-捕捉 Java 异常并返回异常对象。如果没有异常发生，返回 `nil`。
+## luajava.unwrap(jobject obj)
 
-nil luajava.detach(thread)  
-允许 Lua 线程从 Java 线程中分离。
+返回 LuaProxy 代理的表或者是函数
 
-# LuaJava 语法
+```lua
+local Runnable = luajava.bindClass("java.lang.Runnable")
+-- Use table as handler
+local proxy = luajava.newProxy(Runnable, {
+  run = function()
+    print("Run!")
+  end
+})
+local yoo1 = luajava.unwrap(proxy)
+print(type(yoo1)) -- table
+-- You can also use function as handler
+local luaRunnable2 = luajava.newProxy(Runnable, function()
+  print("Here we go!")
+end)
+local yoo2 = luajava.unwrap(luaRunnable2)
+print(type(yoo2)) -- function
+```
+
+# NexLuaJava 语法
 
 ## 创建 Java 对象
 
@@ -135,7 +265,6 @@ print(editText.text)
 
 通过 LuaJava DSL 语法糖你可以省去大部分重复的代码。
 
-
 ```lua
 -- 创建 Button
 local Button = luajava.bindClass("android.widget.Button")
@@ -150,7 +279,7 @@ btn {
   end
 }
 -- 或者传入函数
-local btn = Button {
+local btn = Button() {
   function()
     -- 等同于 btn.Text = "Click me!"
     Text = "Click me!"
@@ -165,7 +294,7 @@ local btn = Button {
   end
 }
 -- 使用括号
-local btn = Button(
+local btn = Button(activity)(
   function()
     -- 等同于 btn.Text = "Click me!"
     Text = "Click me!"
@@ -205,16 +334,3 @@ for i, v in ipairs(myArray1) do
   print(i, v)
 end
 ```
-
-# LuaJava 实现
-
-## jclass
-
-### __index
-
-jclass 的 __index 可以获取静态成员变量和静态成员方法。
-
-其中为了支持 getXXX 语法, 需要区分缓存的类型
-
-1 => 静态成员变量
-2 => 静态成员方法
