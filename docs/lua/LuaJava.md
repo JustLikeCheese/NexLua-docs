@@ -139,7 +139,7 @@ local Button = luajava.bindClass("android.widget.Button")
 local btn = luajava.newInstance(Button, activity)
 ```
 
-## luajava.createArray(jclass clazz, int dim1 \[, int dim2, ...\])  
+## luajava.createArray(clazz, dim1 \[, dim2, ...\])  
 
 创建一个 Java 数组对象，类似 `new clazz[dim1][dim2]...`。  
 
