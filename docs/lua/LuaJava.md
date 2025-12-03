@@ -261,47 +261,6 @@ editText.text = "Hello, World!"
 print(editText.text)
 ```
 
-## LuaJava DSL 语法糖
-
-通过 LuaJava DSL 语法糖你可以省去大部分重复的代码。
-
-```lua
--- 创建 Button
-local Button = luajava.bindClass("android.widget.Button")
-local btn = Button(activity)
--- LuaJava DSL 语法糖
-btn {
-  -- 等同于 btn.Text = "Click me!"
-  Text = "Click me!",
-  -- 等同于 btn.onClick = function xxx
-  onClick = function()
-    print("Click!")
-  end
-}
--- 或者传入函数
-local btn = Button() {
-  function()
-    -- 等同于 btn.Text = "Click me!"
-    Text = "Click me!"
-    -- 等同于 btn.onClick = function xxx
-    onClick = function()
-      print("Click!")
-    end
-    -- 等同于 print(btn.isEnable())
-    print(isEnable())
-    -- 输出 btn 本身
-    print(this) -- android.widget.Button{72fdd82 VFED..C.. ......I. 0,0-0,0}
-  end
-}
--- 使用括号
-local btn = Button(activity)(
-  function()
-    -- 等同于 btn.Text = "Click me!"
-    Text = "Click me!"
-  end
-)
-```
-
 ## 数组操作
 
 ```lua
