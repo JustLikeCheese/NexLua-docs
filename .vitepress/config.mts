@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import llmstxt from 'vitepress-plugin-llms'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -36,6 +37,13 @@ export default defineConfig({
         ]
       },
       {
+        text: 'LLMS 文档',
+        items: [  
+          { text: 'llms-full.txt', link: '/llms/llms-full' },
+          { text: 'llms.txt', link: '/llms/llms' },
+        ],
+      },
+      {
         text: 'Markdown',
         items: [
           { text: 'Runtime API Examples', link: '/example/runtime-examples.md' },
@@ -47,6 +55,14 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/JustLikeCheese/NexLua' },
       { icon: 'telegram', link: 'https://t.me/NexLua' }
+    ]
+  },
+
+  vite: {
+    plugins: [
+      llmstxt({
+        ignoreFiles: ['llms/*', 'example/*' ]
+      })
     ]
   }
 })
