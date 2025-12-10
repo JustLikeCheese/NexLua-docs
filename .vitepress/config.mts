@@ -32,6 +32,7 @@ export default defineConfig({
         items: [
           { text: 'NexLua', link: '/nexlua/NexLua' },
           { text: 'LuaUtil', link: '/nexlua/LuaUtil' },
+          { text: 'LuaContext', link: '/nexlua/LuaContext' },
         ]
       },
       {
