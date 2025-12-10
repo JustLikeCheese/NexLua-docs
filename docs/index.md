@@ -11,8 +11,11 @@ hero:
       text: 快速开始
       link: /quick-start
     - theme: alt
-      text: 实例
-      link: /example/luajava-examples
+      text: LuaJava
+      link: /luajava/LuaJava
+    - theme: alt
+      text: NexLua
+      link: /nexlua/NexLua
 
 features:
   - title: 框架轻量

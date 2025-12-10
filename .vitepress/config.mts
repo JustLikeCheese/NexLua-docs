@@ -10,7 +10,8 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '主页', link: '/' },
-      { text: '示例', link: '/markdown-examples' }
+      { text: 'LuaJava', link: '/luajava/LuaJava' },
+      { text: 'NexLua', link: '/nexlua/NexLua' }
     ],
 
     sidebar: [
@@ -21,17 +22,22 @@ export default defineConfig({
         ]
       },
       {
-        text: 'API 文档',
+        text: 'LuaJava API 文档',
         items: [
-          { text: 'LuaJava', link: '/lua/LuaJava' },
-          { text: 'NexLua', link: '/nexlua/LuaUtil' },
+          { text: 'LuaJava', link: '/luajava/LuaJava' },
         ]
       },
       {
-        text: '示例',
+        text: 'NexLua API 文档',
         items: [
-          { text: 'NexLua 脚本示例', link: '/example/luajava-examples.md' },
-          { text: 'Markdown', link: '/example/markdown-examples.md' },
+          { text: 'LuaUtil', link: '/nexlua/LuaUtil' },
+        ]
+      },
+      {
+        text: 'Markdown',
+        items: [
+          { text: 'Runtime API Examples', link: '/example/luajava-examples.md' },
+          { text: 'Markdown Extension Examples', link: '/example/markdown-examples.md' },
         ]
       }
     ],
