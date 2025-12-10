@@ -22,14 +22,15 @@ export default defineConfig({
         ]
       },
       {
-        text: 'LuaJava API 文档',
+        text: 'LuaJava 文档',
         items: [
           { text: 'LuaJava', link: '/luajava/LuaJava' },
         ]
       },
       {
-        text: 'NexLua API 文档',
+        text: 'NexLua 文档',
         items: [
+          { text: 'NexLua', link: '/nexlua/NexLua' },
           { text: 'LuaUtil', link: '/nexlua/LuaUtil' },
         ]
       },
