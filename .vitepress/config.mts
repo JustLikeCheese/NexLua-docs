@@ -38,7 +38,7 @@ export default defineConfig({
       {
         text: 'Markdown',
         items: [
-          { text: 'Runtime API Examples', link: '/example/luajava-examples.md' },
+          { text: 'Runtime API Examples', link: '/example/runtime-examples.md' },
           { text: 'Markdown Extension Examples', link: '/example/markdown-examples.md' },
         ]
       }
