@@ -12,9 +12,19 @@ NexLua 是一个在 JVM 平台上运行的 Lua-Java 桥。允许开发者使用 
 
 ## 使用
 
+导入模块
+
 ```groovy
 dependencies {
-    implementation 'com.github.justlikecheese:nexlua:LuaJava:1.1.1'
+    implementation 'com.github.justlikecheese:nexlua:LuaJava:1.1.5'
+}
+```
+
+如果你想要类似 AndroLua 的扩展
+
+```groovy
+dependencies {
+    implementation 'com.github.justlikecheese:nexlua:NexLua:1.1.5'
 }
 ```
 
